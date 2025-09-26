@@ -66,6 +66,10 @@ class DesktopCameraControllerBuilder : CameraControllerBuilder {
         return this
     }
 
+    override fun setCameraDeviceType(cameraDeviceType: String): CameraControllerBuilder {
+        return this
+    }
+
     override fun addPlugin(plugin: CameraPlugin): CameraControllerBuilder {
         plugins.add(plugin)
         return this

@@ -13,7 +13,7 @@ group = "com.kashif.ocr_plugin"
 version = "0.0.2"
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         publishLibraryVariants("release", "debug")
     }

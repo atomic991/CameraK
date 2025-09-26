@@ -19,6 +19,7 @@ interface CameraControllerBuilder {
     fun setImageFormat(imageFormat: ImageFormat): CameraControllerBuilder
     fun setDirectory(directory: Directory): CameraControllerBuilder
 
+    fun setCameraDeviceType(cameraDeviceType: String): CameraControllerBuilder
     /**
      * Adds a [CameraPlugin] to the [CameraController].
      *

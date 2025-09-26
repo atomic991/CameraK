@@ -53,7 +53,7 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
      * - AVCaptureDeviceTypeBuiltInUltraWideCamera
      * - AVCaptureDeviceTypeBuiltInMacroCamera
      */
-    fun setupSession(cameraDeviceType: String = AVCaptureDeviceTypeBuiltInWideAngleCamera) {
+    fun setupSession(cameraDeviceType: String? = AVCaptureDeviceTypeBuiltInWideAngleCamera) {
         try {
             captureSession = AVCaptureSession()
             captureSession?.beginConfiguration()
@@ -61,7 +61,7 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
 
             captureSession?.sessionPreset = AVCaptureSessionPresetPhoto
 
-            if (!setupInputs(cameraDeviceType)) {
+            if (cameraDeviceType == null || !setupInputs(cameraDeviceType)) {
                 throw CameraException.DeviceNotAvailable()
             }
 

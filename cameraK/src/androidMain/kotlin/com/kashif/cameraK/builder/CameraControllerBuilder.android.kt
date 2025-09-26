@@ -42,7 +42,6 @@ class AndroidCameraControllerBuilder(
         return this
     }
 
-
     override fun setTorchMode(torchMode: TorchMode): CameraControllerBuilder {
         this.torchMode = torchMode
         return this
@@ -60,6 +59,10 @@ class AndroidCameraControllerBuilder(
 
     override fun setDirectory(directory: Directory): CameraControllerBuilder {
         this.directory = directory
+        return this
+    }
+
+    override fun setCameraDeviceType(cameraDeviceType: String): CameraControllerBuilder {
         return this
     }
 

@@ -50,7 +50,7 @@ actual class CameraController(
     internal var imageFormat: ImageFormat,
     internal var qualityPriority: QualityPrioritization,
     internal var directory: Directory,
-    internal var cameraDeviceType: String,
+    internal var cameraDeviceType: String?,
     internal var plugins: MutableList<CameraPlugin>
 ) : UIViewController(null, null) {
     private var isCapturing = atomic(false)

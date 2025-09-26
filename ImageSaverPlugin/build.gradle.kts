@@ -12,7 +12,7 @@ group = "com.kashif.image_saver_plugin"
 version = "1.0"
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         publishLibraryVariants("release", "debug")
     }

@@ -13,7 +13,7 @@ group = "com.kashif.qr_scanner_plugin"
 version = "0.0.8"
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         publishLibraryVariants("release", "debug")
     }
