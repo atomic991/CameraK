@@ -92,14 +92,13 @@ actual class CameraController(
 
     fun getCameraPreviewLayer() = customCameraController.cameraPreviewLayer
 
-    internal fun currentVideoOrientation(): AVCaptureVideoOrientation {
+    internal fun currentVideoOrientation(): AVCaptureVideoOrientation? {
         val orientation = UIDevice.currentDevice.orientation
         return when (orientation) {
             UIDeviceOrientation.UIDeviceOrientationPortrait -> AVCaptureVideoOrientationPortrait
-            UIDeviceOrientation.UIDeviceOrientationPortraitUpsideDown -> AVCaptureVideoOrientationPortraitUpsideDown
             UIDeviceOrientation.UIDeviceOrientationLandscapeLeft -> AVCaptureVideoOrientationLandscapeRight
             UIDeviceOrientation.UIDeviceOrientationLandscapeRight -> AVCaptureVideoOrientationLandscapeLeft
-            else -> AVCaptureVideoOrientationPortrait
+            else -> null
         }
     }
 

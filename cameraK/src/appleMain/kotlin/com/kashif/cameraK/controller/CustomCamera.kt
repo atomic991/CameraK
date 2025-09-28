@@ -180,7 +180,9 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
             val newPreviewLayer = AVCaptureVideoPreviewLayer(session = session).apply {
                 videoGravity = AVLayerVideoGravityResizeAspectFill
                 setFrame(view.bounds)
-                connection?.videoOrientation = currentVideoOrientation()
+                currentVideoOrientation()?.let {
+                    connection?.videoOrientation = it
+                }
             }
 
             view.layer.addSublayer(newPreviewLayer)
@@ -188,14 +190,13 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
         }
     }
 
-    fun currentVideoOrientation(): AVCaptureVideoOrientation {
+    fun currentVideoOrientation(): AVCaptureVideoOrientation? {
         val orientation = UIDevice.currentDevice.orientation
         return when (orientation) {
             UIDeviceOrientation.UIDeviceOrientationPortrait -> AVCaptureVideoOrientationPortrait
-            UIDeviceOrientation.UIDeviceOrientationPortraitUpsideDown -> AVCaptureVideoOrientationPortraitUpsideDown
             UIDeviceOrientation.UIDeviceOrientationLandscapeLeft -> AVCaptureVideoOrientationLandscapeRight
             UIDeviceOrientation.UIDeviceOrientationLandscapeRight -> AVCaptureVideoOrientationLandscapeLeft
-            else -> AVCaptureVideoOrientationPortrait
+            else -> null
         }
     }
 
