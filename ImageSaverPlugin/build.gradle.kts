@@ -62,10 +62,10 @@ android {
     }
 
     publishing {
-        singleVariant("release") {
-            withJavadocJar()
-            withSourcesJar()
-        }
+//        singleVariant("release") {
+//            withJavadocJar()
+//            withSourcesJar()
+//        }
 
         // For debug variant, we exclude Javadoc and sources to prevent conflicts
         singleVariant("debug") {
@@ -110,8 +110,8 @@ mavenPublishing {
     }
 
     // Configure publishing to Maven Central
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
-    // Enable GPG signing for all publications
-    signAllPublications()
+//    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+//
+//    // Enable GPG signing for all publications
+//    signAllPublications()
 }
