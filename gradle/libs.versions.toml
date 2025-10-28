@@ -12,8 +12,10 @@ kotlin = "2.1.21"
 agp = "8.13.0"
 kotlinx-coroutines = "1.10.1"
 kermit = "2.0.5"
+androidx-viewmodel = "2.9.4"
+orbit-mvi = "10.0.0"
 
-compose-multiplatform = "1.7.3"
+compose-multiplatform = "1.9.1"
 activity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
 coil-mp-version = "3.1.0"
 jetbrains-kotlin-jvm = "2.1.10"
@@ -21,7 +23,9 @@ androidx-activityCompose = "1.10.1"
 startupRuntime = "1.2.0"
 javacvPlatform = "1.5.11"
 tesseractPlatform = "5.5.0-1.5.11"
-textRecognition = "16.0.1"
+mlkit-barcode-android = "17.3.0"
+mlkit-ocr-android = "16.0.1"
+kotlinx-datetime = "0.7.1"
 
 [libraries]
 
@@ -41,6 +45,7 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 composeGradle = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-viewmodel" }
 
 coil3 = { module = "io.coil-kt.coil3:coil", version.ref = "coil-mp-version" }
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-mp-version" }
@@ -50,7 +55,14 @@ androidx-activityCompose = { module = "androidx.activity:activity-compose", vers
 
 javacv-platform = { module = "org.bytedeco:javacv-platform", version.ref = "javacvPlatform" }
 tesseract-platform = { module = "org.bytedeco:tesseract-platform", version.ref = "tesseractPlatform" }
-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
+
+mlkitBarcodeAndroid = { module = "com.google.mlkit:barcode-scanning", version.ref = "mlkit-barcode-android" }
+mlkitOcrAndroid = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-ocr-android" }
+
+kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref="kotlinx-datetime" }
+orbitCore = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-mvi" }
+orbitViewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-mvi" }
+orbitCompose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-mvi" }
 
 [plugins]
 

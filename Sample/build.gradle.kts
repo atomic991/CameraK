@@ -16,7 +16,7 @@ kotlin {
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
-    jvm("desktop")
+//    jvm("desktop")
     listOf(
         iosX64(),
         iosArm64(),
@@ -29,7 +29,7 @@ kotlin {
     }
 
     sourceSets {
-        val desktopMain by getting
+//        val desktopMain by getting
 
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -42,6 +42,12 @@ kotlin {
             implementation(projects.imageSaverPlugin)
             implementation(projects.qrScannerPlugin)
             implementation(projects.ocrPlugin)
+            implementation(projects.invoiceScannerPlugin)
+            implementation(libs.kotlinxDatetime)
+            implementation(libs.androidxLifecycleViewmodel)
+            implementation(libs.orbitCore)
+            implementation(libs.orbitViewmodel)
+            implementation(libs.orbitCompose)
         }
 
         commonTest.dependencies {
@@ -55,10 +61,10 @@ kotlin {
             implementation(libs.androidx.activityCompose)
         }
 
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
-        }
+//        desktopMain.dependencies {
+//            implementation(compose.desktop.currentOs)
+//            implementation(libs.kotlinx.coroutines.swing)
+//        }
 
 
     }

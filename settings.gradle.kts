@@ -36,3 +36,4 @@ include(":ImageSaverPlugin")
 include(":qrScannerPlugin")
 
 include("ocrPlugin")
+include(":invoiceScannerPlugin")

@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.compose.compose
 
 plugins {
@@ -6,7 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
-    id("com.vanniktech.maven.publish") version "0.31.0"
+    id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
 group = "com.kashif.camera_compose"
@@ -15,7 +14,7 @@ version = "1.0"
 kotlin {
     jvmToolchain(17)
     androidTarget {
-        publishLibraryVariants("release", "debug")
+        publishLibraryVariants("release")
     }
     jvm("desktop")
 
@@ -84,10 +83,10 @@ android {
     }
 
     publishing {
-//        singleVariant("release") {
-//            withJavadocJar()
-//            withSourcesJar()
-//        }
+        singleVariant("release") {
+            withJavadocJar()
+            withSourcesJar()
+        }
 
         // For debug variant, we exclude Javadoc and sources to prevent conflicts
         singleVariant("debug") {
@@ -97,19 +96,18 @@ android {
 }
 
 mavenPublishing {
+
     coordinates(
-        groupId = "io.github.kashif-mehmood-km",
+        groupId = "hr.mathcode.atomic-kmp",
         artifactId = "camerak",
         version = "0.0.11"
     )
 
-
-
     pom {
         name.set("CameraK")
         description.set("Camera Library to work on both Android/iOS.")
-        inceptionYear.set("2024")
-        url.set("https://github.com/kashif-e/CameraK")
+        inceptionYear.set("2025")
+        url.set("https://github.com/atomic991/CameraK")
 
         licenses {
             license {
@@ -120,20 +118,20 @@ mavenPublishing {
 
         developers {
             developer {
-                id.set("Kashif-E")
-                name.set("Kashif")
-                email.set("kashismails@gmail.com")
+                id.set("Aron")
+                name.set("atomic")
+                email.set("aron@mathcode.hr")
             }
         }
 
         scm {
-            url.set("https://github.com/kashif-e/CameraK")
+            url.set("https://github.com/atomic991/CameraK")
         }
     }
 
     // Configure publishing to Maven Central
-//    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-//
-//    // Enable GPG signing for all publications
-//    signAllPublications()
+    publishToMavenCentral()
+
+    // Enable GPG signing for all publications
+    signAllPublications()
 }

@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -33,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kashif.cameraK.controller.CameraController
 import com.kashif.cameraK.enums.CameraLens
 import com.kashif.cameraK.enums.Directory
@@ -66,18 +67,18 @@ import com.kashif.cameraK.ui.CameraPreview
 import com.kashif.imagesaverplugin.ImageSaverConfig
 import com.kashif.imagesaverplugin.ImageSaverPlugin
 import com.kashif.imagesaverplugin.rememberImageSaverPlugin
-import com.kashif.ocrPlugin.OcrPlugin
-import com.kashif.ocrPlugin.rememberOcrPlugin
-import com.kashif.qrscannerplugin.QRScannerPlugin
-import com.kashif.qrscannerplugin.rememberQRScannerPlugin
+import com.kashif.invoicescannerplugin.InvoiceScannerData
+import com.kashif.invoicescannerplugin.InvoiceScannerPlugin
+import com.kashif.invoicescannerplugin.rememberInvoiceScannerPlugin
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.company.app.theme.AppTheme
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
+import org.orbitmvi.orbit.compose.collectAsState
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -87,14 +88,15 @@ fun App() = AppTheme {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val viewModel = viewModel { CameraViewModel() }
+    val state = viewModel.collectAsState().value
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)
     ) {
         val cameraPermissionState = remember { mutableStateOf(permissions.hasCameraPermission()) }
         val storagePermissionState = remember { mutableStateOf(permissions.hasStoragePermission()) }
-
-
 
         val cameraController = remember { mutableStateOf<CameraController?>(null) }
         val imageSaverPlugin = rememberImageSaverPlugin(
@@ -106,6 +108,13 @@ fun App() = AppTheme {
             )
         )
 
+        val invoiceScannerPlugin = rememberInvoiceScannerPlugin(coroutineScope)
+        LaunchedEffect(viewModel) {
+            invoiceScannerPlugin.getBarcodeFlow()
+                .collectLatest { scannerData ->
+                    viewModel.setData(scannerData)
+                }
+        }
 
         PermissionsHandler(
             permissions = permissions,
@@ -118,6 +127,8 @@ fun App() = AppTheme {
             CameraContent(
                 cameraController = cameraController,
                 imageSaverPlugin = imageSaverPlugin,
+                invoiceScannerPlugin = invoiceScannerPlugin,
+                state
             )
         }
     }
@@ -148,6 +159,8 @@ private fun PermissionsHandler(
 private fun CameraContent(
     cameraController: MutableState<CameraController?>,
     imageSaverPlugin: ImageSaverPlugin,
+    invoiceScannerPlugin: InvoiceScannerPlugin,
+    state: CameraViewModel.CameraState
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         CameraPreview(
@@ -160,18 +173,23 @@ private fun CameraContent(
                 setTorchMode(TorchMode.OFF)
                 setQualityPrioritization(QualityPrioritization.QUALITY)
                 addPlugin(imageSaverPlugin)
+                addPlugin(invoiceScannerPlugin)
             },
             onCameraControllerReady = {
                 print("==> Camera Controller Ready")
                 cameraController.value = it
-
+                invoiceScannerPlugin.startScanning()
             }
         )
+
+        // Now you can use latestData to display your UI
+        Text(text = "Date ${state.date} Due date: ${state.dueDate}", modifier = Modifier.align(
+            Alignment.Center), color = Color.Red)
 
         cameraController.value?.let { controller ->
             EnhancedCameraScreen(
                 cameraController = controller,
-                imageSaverPlugin = imageSaverPlugin,
+                imageSaverPlugin = imageSaverPlugin
             )
         }
     }
@@ -181,6 +199,7 @@ private fun CameraContent(
 fun EnhancedCameraScreen(
     cameraController: CameraController,
     imageSaverPlugin: ImageSaverPlugin,
+    text: String? = null
 ) {
     val scope = rememberCoroutineScope()
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
@@ -202,7 +221,6 @@ fun EnhancedCameraScreen(
             },
             onLensToggle = { cameraController.toggleCameraLens() }
         )
-
 
         BottomControls(
             modifier = Modifier.align(Alignment.BottomCenter),

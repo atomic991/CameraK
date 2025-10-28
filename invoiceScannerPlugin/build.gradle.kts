@@ -8,8 +8,8 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
-group = "com.kashif.qr_scanner_plugin"
-version = "0.0.8"
+group = "hr.mathcode.invoice_scanner_plugin"
+version = "0.0.1"
 
 kotlin {
     jvmToolchain(17)
@@ -17,29 +17,23 @@ kotlin {
         publishLibraryVariants("release")
     }
 
-    jvm("desktop")
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "qrScannerPlugin"
+            baseName = "invoiceScannerPlugin"
             isStatic = true
         }
     }
 
     sourceSets {
-        val desktopMain by getting{
-            dependencies {
-                implementation(libs.javase)
-                implementation(libs.core.v351)
-            }
-        }
 
         commonMain.dependencies {
             api(projects.cameraK)
             implementation(libs.atomicfu)
+            implementation(libs.kotlinxDatetime)
         }
 
         commonTest.dependencies {
@@ -48,7 +42,8 @@ kotlin {
         }
 
         androidMain.dependencies {
-
+            implementation(libs.mlkitBarcodeAndroid)
+            implementation(libs.mlkitOcrAndroid)
         }
 
     }
@@ -61,7 +56,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.kashif.qr_scanner_plugin"
+    namespace = "hr.mathcode.invoice_scanner_plugin"
     compileSdk = 35
 
     defaultConfig {
@@ -84,13 +79,13 @@ android {
 mavenPublishing {
     coordinates(
         groupId = "hr.mathcode.atomic-kmp",
-        artifactId = "qr_scanner_plugin",
-        version = "0.0.7"
+        artifactId = "invoice_scanner_plugin",
+        version = "0.0.1"
     )
 
     pom {
-        name.set("qrScannerPlugin")
-        description.set("Image Saver Plugin for CameraK")
+        name.set("invoiceScannerPlugin")
+        description.set("Invoice ScannerPlugin for CameraK")
         inceptionYear.set("2025")
         url.set("https://github.com/atomic991/CameraK")
 
