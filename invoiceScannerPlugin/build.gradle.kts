@@ -1,7 +1,10 @@
 import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import kotlin.collections.set
 
 plugins {
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.android.library)
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
@@ -9,7 +12,7 @@ plugins {
 }
 
 group = "hr.mathcode.invoice_scanner_plugin"
-version = "0.0.1"
+version = "0.0.2"
 
 kotlin {
     jvmToolchain(17)
@@ -25,6 +28,39 @@ kotlin {
         it.binaries.framework {
             baseName = "invoiceScannerPlugin"
             isStatic = true
+        }
+    }
+
+    cocoapods {
+        version = "1.1"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+
+        name = "invoiceScannerPlugin"
+
+        ios.deploymentTarget = "16.2"
+
+        framework {
+            baseName = "invoiceScannerPlugin"
+            isStatic = true
+            // Dependency export
+            // Uncomment and specify another project module if you have one:
+            // export(project(":<your other KMP module>"))
+            transitiveExport = false // This is default.
+        }
+
+        // Maps custom Xcode configuration to NativeBuildType
+        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
+        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
+
+        pod("GoogleMLKit/BarcodeScanning") {
+            version = "9.0.0"
+            moduleName = "MLKitBarcodeScanning" // Crucial for cinterop to generate correct imports
+        }
+
+        pod("GoogleMLKit/TextRecognition") {
+            version = "9.0.0"
+            moduleName = "MLKitTextRecognition" // Crucial for cinterop to generate correct imports
         }
     }
 
@@ -80,7 +116,7 @@ mavenPublishing {
     coordinates(
         groupId = "hr.mathcode.atomic-kmp",
         artifactId = "invoice_scanner_plugin",
-        version = "0.0.1"
+        version = "0.0.2"
     )
 
     pom {

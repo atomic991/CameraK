@@ -13,11 +13,8 @@ import com.kashif.cameraK.controller.CameraController
 import platform.Foundation.NSNotificationCenter
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDeviceOrientationDidChangeNotification
-import platform.UIKit.UIInterfaceOrientationMaskLandscape
-import platform.UIKit.UIInterfaceOrientationMaskPortrait
 import platform.UIKit.UIWindowScene
 import platform.UIKit.UIWindowSceneGeometryPreferencesIOS
-import platform.zlib.uLong
 
 /**
  * iOS-specific implementation of [CameraPreview].

@@ -1,4 +1,5 @@
 import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = "com.kashif.camera_compose"
-version = "1.0"
+version = "1.2"
 
 kotlin {
     jvmToolchain(17)
@@ -100,7 +101,7 @@ mavenPublishing {
     coordinates(
         groupId = "hr.mathcode.atomic-kmp",
         artifactId = "camerak",
-        version = "0.0.11"
+        version = "0.0.12"
     )
 
     pom {

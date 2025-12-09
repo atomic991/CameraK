@@ -1,7 +1,9 @@
 package com.kashif.invoicescannerplugin
 
+import cocoapods.GoogleMLKit.MLKBarcodeScanner
 import com.kashif.cameraK.controller.CameraController
 import kotlinx.atomicfu.atomic
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -55,6 +57,7 @@ actual fun startScanning(
     controller.startSession()
 }
 
+@OptIn(ExperimentalForeignApi::class)
 private class CodeAnalyzer(
     private val onCodeScanned: (ScannedCode) -> Unit,
     private val debounceMs: Long = 1000L
@@ -65,13 +68,14 @@ private class CodeAnalyzer(
     private var lastScannedCode: ScannedCode? = null
     private var debounceJob: Job? = null
 
+    private val scanner = MLKBarcodeScanner.barcodeScanner()
+
     override fun captureOutput(
         output: AVCaptureOutput,
         didOutputMetadataObjects: List<*>,
         fromConnection: AVCaptureConnection
     ) {
         if (isProcessing.value) return
-
         for (metadata in didOutputMetadataObjects) {
             if (metadata !is AVMetadataMachineReadableCodeObject) continue
             val scannedCode = ScannedCode.fromAVMetadata(metadata) ?: continue

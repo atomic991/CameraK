@@ -8,14 +8,14 @@ camera-view = "1.4.2"
 core = "3.5.1"
 coreVersion = "3.5.1"
 javase = "3.5.1"
-kotlin = "2.1.21"
+kotlin = "2.2.21"
 agp = "8.13.0"
 kotlinx-coroutines = "1.10.1"
 kermit = "2.0.5"
 androidx-viewmodel = "2.9.4"
 orbit-mvi = "10.0.0"
 
-compose-multiplatform = "1.9.1"
+compose-multiplatform = "1.9.3"
 activity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
 coil-mp-version = "3.1.0"
 jetbrains-kotlin-jvm = "2.1.10"
@@ -71,3 +71,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin-jvm" }
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
