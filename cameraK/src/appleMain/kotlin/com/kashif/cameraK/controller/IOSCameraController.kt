@@ -6,13 +6,17 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import platform.AVFoundation.AVAuthorizationStatusAuthorized
 import platform.AVFoundation.AVAuthorizationStatusNotDetermined
+import platform.AVFoundation.AVCaptureAutoFocusRangeRestrictionNear
 import platform.AVFoundation.AVCaptureConnection
 import platform.AVFoundation.AVCaptureDevice
 import platform.AVFoundation.AVCaptureDeviceInput
 import platform.AVFoundation.AVCaptureDevicePositionFront
+import platform.AVFoundation.AVCaptureFocusModeContinuousAutoFocus
 import platform.AVFoundation.AVCaptureOutput
 import platform.AVFoundation.AVCaptureSession
+import platform.AVFoundation.AVCaptureSessionPreset1280x720
 import platform.AVFoundation.AVCaptureSessionPreset1920x1080
+import platform.AVFoundation.AVCaptureSessionPreset640x480
 import platform.AVFoundation.AVCaptureVideoDataOutput
 import platform.AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegateProtocol
 import platform.AVFoundation.AVCaptureVideoOrientation
@@ -24,8 +28,14 @@ import platform.AVFoundation.AVCaptureVideoPreviewLayer
 import platform.AVFoundation.AVLayerVideoGravityResizeAspectFill
 import platform.AVFoundation.AVMediaTypeVideo
 import platform.AVFoundation.authorizationStatusForMediaType
+import platform.AVFoundation.autoFocusRangeRestriction
+import platform.AVFoundation.focusMode
+import platform.AVFoundation.isAutoFocusRangeRestrictionSupported
+import platform.AVFoundation.isFocusModeSupported
+import platform.AVFoundation.isSmoothAutoFocusSupported
 import platform.AVFoundation.position
 import platform.AVFoundation.requestAccessForMediaType
+import platform.AVFoundation.smoothAutoFocusEnabled
 import platform.CoreGraphics.CGRect
 import platform.CoreGraphics.CGRectZero
 import platform.CoreMedia.CMSampleBufferRef
@@ -142,9 +152,10 @@ internal class IOSCameraController {
     private fun configureSession() {
         session.beginConfiguration()
         try {
-            session.sessionPreset = AVCaptureSessionPreset1920x1080
+            session.sessionPreset = AVCaptureSessionPreset1280x720
             val device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
                 ?: error("No camera device")
+            setDeviceConfiguration(device)
             val input = AVCaptureDeviceInput.deviceInputWithDevice(device, error = null)
                 ?: error("No camera input")
             if (session.canAddInput(input)) {
@@ -170,6 +181,38 @@ internal class IOSCameraController {
             }
         } finally {
             session.commitConfiguration()
+        }
+    }
+
+    @OptIn(ExperimentalForeignApi::class)
+    private fun setDeviceConfiguration(device: AVCaptureDevice) {
+        try {
+            // 1. You MUST lock the device before changing settings
+            if (device.lockForConfiguration(null)) {
+
+                // 2. Enable Continuous Auto Focus
+                // This makes the lens constantly adjust as you move closer/further
+                if (device.isFocusModeSupported(AVCaptureFocusModeContinuousAutoFocus)) {
+                    device.focusMode = AVCaptureFocusModeContinuousAutoFocus
+                }
+
+                // 3. Optimize for "Near" Objects (The "Silver Bullet" for scanning)
+                // This tells the hardware to prioritize searching for focus on objects
+                // that are close to the lens (0-30cm), speeding up the focus lock significantly.
+                if (device.isAutoFocusRangeRestrictionSupported()) {
+                    device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear
+                }
+
+                // 4. Smooth Focus (Optional)
+                // Reduces the "pulsing" effect, making the video feed look stable
+                if (device.isSmoothAutoFocusSupported()) {
+                    device.smoothAutoFocusEnabled = true
+                }
+
+                device.unlockForConfiguration()
+            }
+        } catch (e: Exception) {
+            println("Error configuring focus: $e")
         }
     }
 
