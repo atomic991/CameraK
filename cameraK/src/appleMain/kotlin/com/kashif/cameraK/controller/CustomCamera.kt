@@ -59,13 +59,13 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
             captureSession?.beginConfiguration()
 
 
-            captureSession?.sessionPreset = AVCaptureSessionPresetPhoto
+            captureSession?.sessionPreset = AVCaptureSessionPreset640x480
 
             if (cameraDeviceType == null || !setupInputs(cameraDeviceType)) {
                 throw CameraException.DeviceNotAvailable()
             }
 
-            setupPhotoOutput()
+//            setupPhotoOutput()
             captureSession?.commitConfiguration()
         } catch (e: CameraException) {
             cleanupSession()
@@ -225,23 +225,23 @@ class CustomCameraController(val qualityPriority: QualityPrioritization) : NSObj
      * This allows for dynamic adjustment of capture quality
      */
     private fun adjustSessionQuality() {
-        captureSession?.beginConfiguration()
+//        captureSession?.beginConfiguration()
+//
+//        val memoryUsage = MemoryManager.getMemoryUsagePercentage()
+//        val underPressure = MemoryManager.isUnderMemoryPressure()
+//
+//
+//        val newPreset = when {
+//            underPressure -> AVCaptureSessionPresetMedium
+//            memoryUsage > 70 -> AVCaptureSessionPresetHigh
+//            else -> AVCaptureSessionPreset1280x720
+//        }
+//
+//        captureSession?.sessionPreset = newPreset
+//        captureSession?.commitConfiguration()
 
-        val memoryUsage = MemoryManager.getMemoryUsagePercentage()
-        val underPressure = MemoryManager.isUnderMemoryPressure()
 
-
-        val newPreset = when {
-            underPressure -> AVCaptureSessionPresetMedium
-            memoryUsage > 70 -> AVCaptureSessionPresetHigh
-            else -> AVCaptureSessionPresetPhoto
-        }
-
-        captureSession?.sessionPreset = newPreset
-        captureSession?.commitConfiguration()
-
-
-        highQualityEnabled = newPreset == AVCaptureSessionPresetPhoto
+//        highQualityEnabled = newPreset == AVCaptureSessionPresetPhoto
     }
 
     /**

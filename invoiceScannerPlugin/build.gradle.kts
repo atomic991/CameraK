@@ -36,32 +36,26 @@ kotlin {
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
 
-        name = "invoiceScannerPlugin"
-
         ios.deploymentTarget = "16.2"
+
+        podfile = project.file("../iosApp/Podfile")
 
         framework {
             baseName = "invoiceScannerPlugin"
             isStatic = true
-            // Dependency export
-            // Uncomment and specify another project module if you have one:
-            // export(project(":<your other KMP module>"))
-            transitiveExport = false // This is default.
         }
 
-        // Maps custom Xcode configuration to NativeBuildType
-        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
-
+        pod("GoogleMLKit/Vision") {
+            moduleName = "MLKitVision"
+        }
         pod("GoogleMLKit/BarcodeScanning") {
-            version = "9.0.0"
-            moduleName = "MLKitBarcodeScanning" // Crucial for cinterop to generate correct imports
+            moduleName = "MLKitBarcodeScanning"
         }
 
-        pod("GoogleMLKit/TextRecognition") {
-            version = "9.0.0"
-            moduleName = "MLKitTextRecognition" // Crucial for cinterop to generate correct imports
-        }
+//        pod("GoogleMLKit/TextRecognition") {
+//            version = "9.0.0"
+//            moduleName = "MLKitTextRecognition" // Crucial for cinterop to generate correct imports
+//        }
     }
 
     sourceSets {
@@ -86,7 +80,11 @@ kotlin {
 
     //https://kotlinlang.org/docs/native_objc_interop.html#export_of_kdoc_comments_to_generated_objective_c_headers
 //    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
-//        compilations["main"].compilerOptions.options.freeCompilerArgs.add("_Xexport_kdoc")
+//        compilations["main"].compileTaskProvider.configure {
+//            compilerOptions {
+//                freeCompilerArgs.add("-Xexport-kdoc")
+//            }
+//        }
 //    }
 
 }

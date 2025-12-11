@@ -67,7 +67,6 @@ class IOSCameraControllerBuilder : CameraControllerBuilder {
         val format = imageFormat ?: throw InvalidConfigurationException("ImageFormat must be set.")
         val dir = directory ?: throw InvalidConfigurationException("Directory must be set.")
 
-
         val cameraController = CameraController(
             flashMode = flashMode,
             torchMode = torchMode,
@@ -78,6 +77,8 @@ class IOSCameraControllerBuilder : CameraControllerBuilder {
             qualityPriority = qualityPriority,
             cameraDeviceType = cameraDeviceType
         )
+
+        cameraController.initializeControllerPlugins()
 
         return cameraController
     }

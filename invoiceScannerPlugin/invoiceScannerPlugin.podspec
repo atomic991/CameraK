@@ -9,8 +9,8 @@ Pod::Spec.new do |spec|
     spec.vendored_frameworks      = 'build/cocoapods/framework/invoiceScannerPlugin.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '16.2'
-    spec.dependency 'GoogleMLKit/BarcodeScanning', '9.0.0'
-    spec.dependency 'GoogleMLKit/TextRecognition', '9.0.0'
+    spec.dependency 'GoogleMLKit/BarcodeScanning'
+    spec.dependency 'GoogleMLKit/Vision'
                 
     if !Dir.exist?('build/cocoapods/framework/invoiceScannerPlugin.framework') || Dir.empty?('build/cocoapods/framework/invoiceScannerPlugin.framework')
         raise "

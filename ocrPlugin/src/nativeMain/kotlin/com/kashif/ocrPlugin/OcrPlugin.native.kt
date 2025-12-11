@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package com.kashif.ocrPlugin
 
 import androidx.compose.ui.graphics.ImageBitmap
@@ -252,7 +254,7 @@ class VideoDataDelegate(
         CFRelease(sampleBuffer)
     }
 }
-@OptIn(ExperimentalForeignApi::class)
+
 actual fun startRecognition(
     cameraController: CameraController,
     onText: (String) -> Unit

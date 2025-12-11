@@ -398,8 +398,6 @@ actual class CameraController(
     }
 
     actual fun startSession() {
-
-
         memoryManager.updateMemoryStatus()
         memoryManager.clearBufferPools()
         initializeControllerPlugins()

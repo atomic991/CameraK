@@ -11,10 +11,7 @@ import com.kashif.cameraK.builder.CameraControllerBuilder
 import com.kashif.cameraK.builder.createIOSCameraControllerBuilder
 import com.kashif.cameraK.controller.CameraController
 import platform.Foundation.NSNotificationCenter
-import platform.UIKit.UIApplication
 import platform.UIKit.UIDeviceOrientationDidChangeNotification
-import platform.UIKit.UIWindowScene
-import platform.UIKit.UIWindowSceneGeometryPreferencesIOS
 
 /**
  * iOS-specific implementation of [CameraPreview].
@@ -29,8 +26,6 @@ actual fun expectCameraPreview(
     cameraConfiguration: CameraControllerBuilder.() -> Unit,
     onCameraControllerReady: (CameraController) -> Unit
 ) {
-
-//    lockScreen(UIInterfaceOrientationMaskPortrait)
 
     val cameraController = remember {
         createIOSCameraControllerBuilder()
@@ -56,6 +51,7 @@ actual fun expectCameraPreview(
 
         onDispose {
             notificationCenter.removeObserver(observer)
+            cameraController.stopSession()
         }
     }
 
@@ -63,20 +59,4 @@ actual fun expectCameraPreview(
         factory = { cameraController },
         modifier = modifier,
     )
-}
-
-fun lockScreen(orientationIOS: ULong) {
-    val scenes = UIApplication.sharedApplication.connectedScenes
-    val scene = scenes.firstOrNull { it is UIWindowScene } as? UIWindowScene
-    if (scene == null) {
-        println("No active UIWindowScene found. Orientation update skipped.")
-        return
-    }
-
-    val geometryPreferences = UIWindowSceneGeometryPreferencesIOS(orientationIOS)
-    scene.requestGeometryUpdateWithPreferences(geometryPreferences) { error ->
-        if (error != null) {
-            println(error.localizedDescription)
-        }
-    }
 }
