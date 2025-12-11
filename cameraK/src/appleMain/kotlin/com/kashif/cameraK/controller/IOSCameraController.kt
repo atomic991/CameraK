@@ -152,7 +152,7 @@ internal class IOSCameraController {
     private fun configureSession() {
         session.beginConfiguration()
         try {
-            session.sessionPreset = AVCaptureSessionPreset1280x720
+            session.sessionPreset = AVCaptureSessionPreset1920x1080
             val device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
                 ?: error("No camera device")
             setDeviceConfiguration(device)
@@ -162,7 +162,11 @@ internal class IOSCameraController {
                 session.addInput(input)
                 videoDeviceInput = input
             }
+            val settings = mapOf<Any?, Any>(
+                platform.CoreVideo.kCVPixelBufferPixelFormatTypeKey to platform.CoreVideo.kCVPixelFormatType_32BGRA
+            )
             val out = AVCaptureVideoDataOutput().apply {
+                videoSettings = settings
                 alwaysDiscardsLateVideoFrames = false
                 setSampleBufferDelegate(
                     sampleDelegate,
