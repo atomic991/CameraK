@@ -51,9 +51,6 @@ kotlin {
         pod("GoogleMLKit/BarcodeScanning") {
             moduleName = "MLKitBarcodeScanning"
         }
-        pod("GoogleMLKit/TextRecognition") {
-            moduleName = "MLKitTextRecognition"
-        }
     }
 
     sourceSets {

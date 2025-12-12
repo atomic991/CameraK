@@ -8,14 +8,3 @@ target 'iosApp' do
   # Pods for iosApp
   pod 'invoiceScannerPlugin', :path => '../invoiceScannerPlugin'
 end
-
-# platform :ios, '16.2'
-# workspace 'iosApp'
-# use_frameworks! :linkage => :static
-#
-# target 'iosApp' do
-#
-#   pod 'GoogleMLKit/BarcodeScanning'
-#   pod 'GoogleMLKit/FaceDetection'
-#
-# end
