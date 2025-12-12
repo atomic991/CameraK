@@ -51,11 +51,9 @@ kotlin {
         pod("GoogleMLKit/BarcodeScanning") {
             moduleName = "MLKitBarcodeScanning"
         }
-
-//        pod("GoogleMLKit/TextRecognition") {
-//            version = "9.0.0"
-//            moduleName = "MLKitTextRecognition" // Crucial for cinterop to generate correct imports
-//        }
+        pod("GoogleMLKit/TextRecognition") {
+            moduleName = "MLKitTextRecognition"
+        }
     }
 
     sourceSets {

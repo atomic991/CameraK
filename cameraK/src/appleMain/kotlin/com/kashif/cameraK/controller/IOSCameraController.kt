@@ -17,6 +17,7 @@ import platform.AVFoundation.AVCaptureSession
 import platform.AVFoundation.AVCaptureSessionPreset1280x720
 import platform.AVFoundation.AVCaptureSessionPreset1920x1080
 import platform.AVFoundation.AVCaptureSessionPreset640x480
+import platform.AVFoundation.AVCaptureSessionPresetPhoto
 import platform.AVFoundation.AVCaptureVideoDataOutput
 import platform.AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegateProtocol
 import platform.AVFoundation.AVCaptureVideoOrientation
@@ -152,7 +153,7 @@ internal class IOSCameraController {
     private fun configureSession() {
         session.beginConfiguration()
         try {
-            session.sessionPreset = AVCaptureSessionPreset1920x1080
+            session.sessionPreset = AVCaptureSessionPresetPhoto
             val device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
                 ?: error("No camera device")
             setDeviceConfiguration(device)

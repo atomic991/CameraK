@@ -131,7 +131,6 @@ actual class CameraController(
             customCameraController.startPreview(view)
         }
     }
-
     actual fun stopSession() {
         customCameraController.stop()
     }
